@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_ssrt.SSRTConstants</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>SSRTConstants</name>
+        <script><![CDATA[var SSRTConstants = (function () {
+	
+	return {
+		SSRT_USERS_TABLE : "u_compliance_users",
+		SSRT_REPORT_TABLE : "x_snc_ssrt_run_reports",
+		SSRT_ANTI_PATTERNS_TABLE: "x_snc_ssrt_anti_pattern",
+		SSRT_CONFIGURATION_TABLE: "x_snc_ssrt_configuration",
+		SSRT_CONFIGURE_REPORT_TABLE : "x_snc_ssrt_reports",
+		SSRT_HANDLERS_TABLE: "x_snc_ssrt_handlers",
+		SSRT_PATTERN_MAP_TABLE: "x_snc_ssrt_pattern_map",
+		
+	};
+})();]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-04-02 23:00:49</sys_created_on>
+        <sys_id>c5cded204fd957000d6589dba310c77d</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>SSRTConstants</sys_name>
+        <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+        <sys_update_name>sys_script_include_c5cded204fd957000d6589dba310c77d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-04-02 23:05:19</sys_updated_on>
+    </sys_script_include>
+</record_update>

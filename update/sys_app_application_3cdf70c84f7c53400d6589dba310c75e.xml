@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update sys_domain="global" table="sys_app_application">
+    <sys_app_application action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category/>
+        <description/>
+        <device_type>browser</device_type>
+        <hint/>
+        <name>Shared Service Recommendation Tool</name>
+        <order/>
+        <roles>x_snc_ssrt.user</roles>
+        <sys_class_name>sys_app_application</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-07 09:50:57</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>3cdf70c84f7c53400d6589dba310c75e</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Shared Service Recommendation Tool</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+        <sys_update_name>sys_app_application_3cdf70c84f7c53400d6589dba310c75e</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-07 09:50:58</sys_updated_on>
+        <title>Shared Service Recommendation Tool</title>
+        <view_name/>
+    </sys_app_application>
+</record_update>

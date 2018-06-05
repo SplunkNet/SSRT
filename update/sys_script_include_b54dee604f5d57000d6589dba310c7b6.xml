@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_ssrt.RunRecommendationReport</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>RunRecommendationReport</name>
+        <script><![CDATA[var RunRecommendationReport = Class.create();
+RunRecommendationReport.prototype = {
+	
+	initialize: function() {
+		
+		gs.info(" IN RunRecommendationReport");
+	},
+	
+	run:function() {
+		
+		
+		if (!gs.nil(current)) {
+			var configId = current.getValue("sys_id").toString();
+			var configName = current.getValue("name");
+			var groupId = current.getValue("group").toString();
+			var patternMapIds = current.getValue("patterns")  ;
+			var groupName = this.getGroupName(groupId);
+			
+			var reportConfig = {
+				configId: "",
+				configName: "",
+				groupId: "",
+				groupName: "",
+				patternMapIds: "",
+				
+				patternMap: [],
+				
+				search: [
+				{
+					sharedServiceId: "",
+					sharedServiceName: "",
+					patternId: "",
+					patternName: ""
+				}],
+				
+				patterns: []
+			};
+			
+			reportConfig.configId = configId;
+			reportConfig.configName = configName;
+			reportConfig.groupId = groupId;
+			reportConfig.groupName = groupName;
+			
+			
+			var patternMap = this.getPatternMapsDetails(patternMapIds, reportConfig);
+			reportConfig.patternMap = patternMap;
+			gs.info("reportConfig:" + JSON.stringify(reportConfig));
+				
+		}else{
+			gs.error("RunRecommendationReport current is null");
+		}
+	},
+	
+	getGroupName: function(groupID) {
+		var grGroup = new GlideRecord("x_snc_ssrt_ssrt_group");
+		grGroup.addQuery('sys_id', groupID);
+		grGroup.query();
+		
+		if (grGroup.next()) {
+			var groupName = grGroup.group_name;
+			return groupName;
+		}
+	},
+	
+	getPatternMapsDetails:function(ids, reportConfig) {
+		
+		var values = ids.split(",");
+		var patternMap = [];
+		patterns = [];
+		
+		for (var i = 0; i < values.length; i++) {
+			var patternDetail = this.getPatternMapDetail(values[i]);
+			
+			patternMap.push(patternDetail);
+			patterns.push(patternDetail["name"]);
+		}
+		
+		reportConfig.patternMap = patternMap;
+		reportConfig.patterns = patterns;
+		
+		return patternMap;
+	},
+	
+	getPatternMapDetail:function(patternMapId) {
+		var gr = new GlideRecord("x_snc_ssrt_pattern_map");
+		gr.addQuery('sys_id', patternMapId);
+		gr.query();
+		
+		var patternDetail = {};
+			
+			if (gr.next()) {
+				var patternId = gr.pattern;
+				var patternName = this.getPatternDetail(patternId).toString();
+				var microservice = gr.microservice;
+				var microserviceName = this.getMicroserviceDetail(gr.microservice).toString();
+				
+				patternDetail["sysId"] = patternMapId;
+				patternDetail["name"] = patternName;
+				patternDetail["microservice"] = microserviceName;
+				
+				return patternDetail;
+			}
+		},
+		
+		getPatternDetail:function(patternId) {
+			var gr = new GlideRecord("x_snc_ssrt_anti_pattern");
+			gr.addQuery('sys_id', patternId);
+			gr.query();
+			
+			if (gr.next()) {
+				var name = gr.pattern;
+				return name;
+			}
+		},
+		
+		getMicroserviceDetail:function(patternMapId) {
+			var gr = new GlideRecord("x_snc_ssrt_service");
+			gr.addQuery('sys_id', patternMapId);
+			gr.query();
+			
+			if (gr.next()) {
+				var name = gr.name;
+				return name;
+			}
+		},
+		
+		
+		type: 'RunRecommendationReport'
+		
+		
+	};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-04-03 04:02:11</sys_created_on>
+        <sys_id>b54dee604f5d57000d6589dba310c7b6</sys_id>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>RunRecommendationReport</sys_name>
+        <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+        <sys_update_name>sys_script_include_b54dee604f5d57000d6589dba310c7b6</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-05-11 04:47:02</sys_updated_on>
+    </sys_script_include>
+</record_update>

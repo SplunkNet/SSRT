@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Report History" max_length="40" name="x_snc_ssrt_report_runs" type="collection">
+        <element label="End" max_length="40" name="end" type="glide_date_time"/>
+        <element label="Report Configuration" max_length="32" name="report_configuration" reference="x_snc_ssrt_reports" type="reference"/>
+        <element label="Start" max_length="40" name="start" type="glide_date_time"/>
+        <element display="true" label="Status" max_length="16" name="status" type="string"/>
+        <index name="index">
+            <element name="report_configuration"/>
+        </index>
+    </element>
+</database>

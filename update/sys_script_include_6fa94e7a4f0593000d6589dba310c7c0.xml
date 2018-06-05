@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_ssrt.SSRTHelper</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>SSRTHelper</name>
+        <script><![CDATA[var SSRTHelper = Class.create();
+SSRTHelper.prototype = {
+    initialize: function() {
+    },
+	
+	getComponentHandlersGR : function() {
+	    var gr = new GlideRecord("u_code_component_handlers");
+		gr.addQuery("u_active","true");
+		gr.query();
+		return gr;
+	},
+	
+	getPatterns : function() {
+	   var patternArray = [];
+		var mapGR = new GlideRecord("u_pattern_map");
+		mapGR.addQuery("u_active","true");
+		mapGR.query();
+	   while(mapGR.next()) {
+		   patternArray.push(
+		   {
+			   u_number : mapGR.u_pattern.u_number.toString(),
+			   u_text : mapGR.u_pattern.u_text.toString(),
+			   sys_id : mapGR.u_pattern.sys_id.toString()
+		   });		   
+	   }
+	  return patternArray;
+	},
+	
+	getMicroServicesByPattern : function() {
+		var patMap = [];
+		var glideRecord = new GlideRecord("u_pattern_map");
+		glideRecord.addQuery("u_active","true");
+		glideRecord.addQuery("u_micro_service.u_active", "true");
+		glideRecord.query();
+		while(glideRecord.next()) {
+			if(gs.nil(patMap[glideRecord.u_pattern.sys_id.toString()])) {
+				patMap[glideRecord.u_pattern.sys_id.toString()] = [];
+			}
+			patMap[glideRecord.u_pattern.sys_id.toString()].push(glideRecord.u_micro_service.toString()+"$"+glideRecord.u_micro_service.u_name);
+		}
+		return patMap;
+	},
+	
+	populateTable : function(resultArray,patternMap){
+		
+		var glideRecord = new GlideRecord("u_complaince_report");
+		for(var i=0;i<resultArray.length;i++) {	
+		 if(!gs.nil(patternMap[resultArray[i].pattern.sys_id.toString()])) {	
+			for(var k=0;k<patternMap[resultArray[i].pattern.sys_id.toString()].length;k++) {
+			 glideRecord.initialize();
+			 var automationString = "";
+			 for(var j=0;j<resultArray[i].automation.length;j++) {
+				 automationString += resultArray[i].automation[j].sys_id+",";
+			 }			
+			 glideRecord.u_automations = automationString;
+			 glideRecord.u_pattern = resultArray[i].pattern.sys_id;
+			 glideRecord.u_code_ref = resultArray[i].sys_id;
+                         glideRecord.u_owner = resultArray[i].owner;
+			 glideRecord.u_code_table = resultArray[i].table_name;
+			 glideRecord.u_info = gs.getProperty("glide.servlet.uri") + resultArray[i].table_name + ".do?sys_id=" + resultArray[i].sys_id + "$" + resultArray[i].name;	
+			 var microArr = patternMap[resultArray[i].pattern.sys_id.toString()][k].split("$");
+			 glideRecord.u_micro_services = microArr[0];
+			 glideRecord.u_ms_name = microArr[1];
+			 glideRecord.u_occurance_count = resultArray[i].count;
+			 glideRecord.insert();	
+		   }
+		 }
+		}		
+	},
+	
+	sendEmail : function() {
+		var to = "venu.vajjala@servicenow.com";
+		var subject = "Shared Services : Recommendation";
+		var headerContent = "Dear Automation Developer, <br /><br />You are receiving this mail because we found that some code component developed (last modified) by you – did not leverage the recommended Shared Services like:<br />";
+		headerContent += "<ul><li>Common Communication Framework – which should be used for communicating with HI / SNAC / EM / Mails / Customer Instance</li><li>CIDLogger (context-aware-logger) – which should be used for Standardized Logging, augmented with auto-detected context-info/id.</li></ul>";
+		headerContent += "<br /><i> What should i do ? </i><ul><li>Please refer to the comprehensive help content provided for each shared service.</li></ul>";
+		
+		headerContent += "<br /><i> Why should I  do this ? </i><ul><li> Guaranteed, sequenced  delivery of your messages [If you use CCF].</li> <li> Improved performance of your automation via asynchronous communication [If you use CCF] </li><li>  Context is available in your logs,  so that you can correlate easily across Automation / Server / DataCenter [If you use CIDLogger] </li></ul>";
+		
+		headerContent += "<br /> <i>If you are new to CCF or CIDLogger please refer to help content at the end of this mail to get deeper insight. </i> <br/> <br/>";
+		
+		headerContent += "<br /><b><u>Scan-Report of Your Code:</u></b> <br/>";
+		
+		var glideRecord = new GlideRecord("u_complaince_report");
+		glideRecord.query();
+		var userToRecordMap = [];
+		var ownermap = [];
+		
+		/*Grouping by owner */
+		while (glideRecord.next()) {
+			
+			if (gs.nil(userToRecordMap[glideRecord.u_owner.toString()])) {
+				userToRecordMap[glideRecord.u_owner.toString()] = [];
+				ownermap.push(glideRecord.u_owner.toString());
+				
+			}
+			
+			var infoArr = glideRecord.u_info.split("$");
+			
+			var obj = {
+				link : infoArr[0],
+				name : infoArr[1],
+				serviceName : glideRecord.u_micro_services.u_name.toString(),
+				serviceDesc : glideRecord.u_micro_services.u_description.toString(),
+				pattern : glideRecord.u_pattern.u_text.toString(),
+				occurance : glideRecord.u_occurance_count.toString()
+			};
+			userToRecordMap[glideRecord.u_owner.toString()].push(obj);
+		}
+				
+		/* populating code references */
+		for (var i=0;i<ownermap.length ; i++) {	
+			
+			subject = "Shared Services : Recommendation";
+			
+			var content = headerContent;
+			/* Sending seperate mail for each owner due to size constraint of linux command to send email is 128KB */
+			content += "<table border = '2px'><tr>";
+			content += "<tr> <td> File Reference </td>  <td> What's the code to be replaced ? </td> <td> Recommended Shared Service </td> </tr>";
+			for (var j= 0; j<userToRecordMap[ownermap[i]].length ; j++) {
+				content += "<tr>";
+				content += "<td><a href='"+userToRecordMap[ownermap[i]][j].link+ "'>"+userToRecordMap[ownermap[i]][j].name+"</a></td>";
+				content += "<td>" + " Found " + userToRecordMap[ownermap[i]][j].occurance + " Occurance(s) of code <b>" + userToRecordMap[ownermap[i]][j].pattern + "</b>";
+				content += "<td>" + userToRecordMap[ownermap[i]][j].serviceName + "</td>";
+				content += "</tr>";
+			}	
+			content += "</table>";
+			
+			var footerContent = "<br /><br />"; 
+			
+			/* Populating help content */
+			footerContent += "<br/> <br /><font>" + "<b> <u> Help Content </u> </b>";
+			var count = 1;
+			var serviceGR  = new GlideRecord("u_micro_services");
+			serviceGR.addQuery("u_active", "true");
+			serviceGR.query();
+			while (serviceGR.next()) {
+				footerContent += "<br/><br/><b><u>" + count + ". "+ serviceGR.u_name + "</u></b><br /><br />";
+				footerContent += serviceGR.u_description.split("\r\n").join("<br />");
+				count++;
+			}
+			footerContent +=  "</font>";
+			/* Populating footer content */
+			footerContent += "<br /><br /><br />Please contact Shared Services Team (SharedServices@servicenow.com) in case of any queries<br/>"; 
+			content += footerContent;
+			
+			var emailID = "";
+			var specialOwner = gs.getProperty("MCST.specialusers","");
+			var sampleUsers  = gs.getProperty("MCST.sampleusers","");
+			var defaultReceivers = gs.getProperty("MCST.defaultReceivers","");
+			
+			if (specialOwner.indexOf(ownermap[i]) != -1) {
+				subject += " - Special User (" + ownermap[i] + ")";
+				emailID = defaultReceivers;
+			}
+			else {
+				var userGR = new GlideRecord("sys_user");
+				userGR.addQuery("user_name", ownermap[i]);
+				userGR.addQuery("active", "true");
+				userGR.query();
+				if (userGR.next()) {
+					if (sampleUsers.indexOf(ownermap[i]) != -1) 
+						emailID = userGR.email.toString() + "," + defaultReceivers;
+					else {
+						emailID = defaultReceivers;
+						subject += " - User (" + ownermap[i] + ")";
+					}
+				} else {
+					subject += " - User Missing (" + ownermap[i] + ")";
+					emailID = defaultReceivers;
+				}
+			}
+			
+			if (!gs.nil(emailID)) {
+				var messageobj = {			
+					directMailerInputs : {
+						to : emailID,
+						useForceSend : "true",
+						subject : subject
+					},
+					"channelsCommInfo": [ {
+					"channelType": "Mail By Text",
+					"message": content 
+					}],
+
+					contextTableName : "sys_db_object",
+					contextSysID : "bd085df3db15a6003ea276821f961957"
+				};
+				CIDCommunicator.communicate(messageobj);
+			}
+		}			
+		
+	},
+	
+	clearHistory : function() {
+	    var gr = new GlideRecord("u_complaince_report");
+		gr.query();
+		while (gr.next()) {
+			gr.deleteRecord();
+		}
+	},
+	
+    type: 'SSRTHelper'
+};
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-28 14:33:38</sys_created_on>
+        <sys_id>6fa94e7a4f0593000d6589dba310c7c0</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>SSRTHelper</sys_name>
+        <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+        <sys_update_name>sys_script_include_6fa94e7a4f0593000d6589dba310c7c0</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-28 14:33:38</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Recommended Service" max_length="40" name="x_snc_ssrt_service" type="collection">
+        <element label="Active" max_length="32" name="active" type="boolean"/>
+        <element label="Description" max_length="4096" name="description" type="string"/>
+        <element display="true" label="Name" max_length="64" name="name" type="string"/>
+    </element>
+</database>

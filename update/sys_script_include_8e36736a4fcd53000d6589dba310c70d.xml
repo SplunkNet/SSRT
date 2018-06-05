@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_ssrt.SSRTDashboardHelper</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>SSRTDashboardHelper</name>
+        <script><![CDATA[var SSRTDashboardHelper = Class.create();
+SSRTDashboardHelper.prototype = {
+    constants: {
+        MSG_ERROR: "Error ",
+        MSG_SUCCESS: "Success",
+
+    },
+
+    initialize: function () {
+
+        this.logger = new GSLog('SSRTDashboardHelper : ', 'SSRTDashboardHelper', 'INFO');
+    },
+
+    complianceReportToComplianceUser: function(){
+       
+		  this.logger.error("Start complianceReportToComplianceUser");
+		var gr = new GlideRecord(CIDMicroServiceComplainceConstants.SSCT_COMPLIANCE_REPORT_TABLE);
+        gr.query();
+         this.logger.error("Start complianceReportToComplianceUser: getRowCount "+gr.getRowCount());
+        while(gr.next()){
+            this.updateComplianceUsersViolation(gr.u_occurance_count,gr.u_owner );
+        }
+		
+    },
+
+    complianceUsersReset: function () {
+
+        this.logger.debug('Start complianceUsersReset');
+        try {
+            var gr = new GlideRecord(CIDMicroServiceComplainceConstants.SSCT_COMPLIANCE_USERS_TABLE);
+            gr.query();
+            gr.setValue('u_compliance_violations', 0);
+            gr.updateMultiple();
+        } catch (e) {
+            this.logger.error(" complianceUsersReset e:" + e);
+        }
+        this.logger.debug('END complianceUsersReset');
+    },
+    
+
+    /**
+ * This method goes through all the records from Action Logger table as the the query, and extracts the records which are related to change and communication on HI Channel
+ * extracts the fields which are required for audit information and creates records. Maintains a array with unique records based on parameters and returns the same.
+ * @param : current, previous 
+ * @return : None
+ */
+    updateManagerViolation: function (current, previous /*null when async*/) {
+
+        this.logger.error('Start updateManagerViolation for ');
+        if (!gs.nil(current.u_user_name)) {
+            this.calculateViolation(current, previous);
+        }
+        this.logger.error('End updateManagerViolation for ');
+    },
+
+    calculateViolation: function (current, previous /*null when async*/) {
+
+        try {
+
+            var curentViolation = 0;
+            var previousViolation = 0;
+
+            if (!gs.nil(current.u_compliance_violations)) {
+                curentViolation = parseInt(current.u_compliance_violations, 10);
+            }
+
+
+            if (!gs.nil(previous.u_compliance_violations)) {
+                previousViolation = parseInt(previous.u_compliance_violations, 10);
+            }
+
+            var finalViolation = curentViolation - previousViolation;
+
+            this.updateManagerRecord(finalViolation, current.u_manager_user_name);
+
+        } catch (e) {
+            this.logger.error(" violation e:" + e);
+        }
+    },
+
+    updateManagerRecord: function (violation, manager) {
+
+        try {
+            var gr = new GlideRecord(CIDMicroServiceComplainceConstants.SSCT_COMPLIANCE_USERS_TABLE);
+            gr.addQuery('u_user_name', manager);
+            gr.query();
+         
+            if (gr.next()) {
+ 
+				var existingViolation = gr.u_compliance_violations;
+
+                if (!gs.nil(existingViolation)) {
+                    this.logger.error(+ "  I4 updateManagerRecord:" + parseInt(existingViolation) + "|");
+                    existingViolation = parseInt(existingViolation) + violation;
+                } else {
+                    existingViolation = violation;
+                }
+               this.logger.error(+ "  I4 updateManagerRecord  3 Final updateManagerRecord: existingViolation" + existingViolation + "|");
+
+                if (existingViolation < 0) {
+                    existingViolation = 0;
+                }
+                gr.u_compliance_violations = existingViolation;
+                gr.update();
+            }
+
+        } catch (e) {
+            this.logger.error("  I4 updateManagerRecord  5 Final updateManagerRecord Exception :" + e + "|");
+        }
+
+    },
+
+    updateComplianceUsersViolation: function (violation, manager) {
+
+
+        try {
+            var gr = new GlideRecord(CIDMicroServiceComplainceConstants.SSCT_COMPLIANCE_USERS_TABLE);
+            gr.addQuery('u_user_name', manager);
+
+
+            gr.query();
+
+            if (gr.next()) {
+                this.logger.error("updateComplianceUsersViolation exists : " + manager);
+
+                var existingViolation = gr.u_compliance_violations;
+
+                if (!gs.nil(existingViolation)) {
+                    existingViolation = parseInt(existingViolation) + violation;
+                } else {
+                    existingViolation = violation;
+                }
+                this.logger.error("  Final updateComplianceUsersViolation:" + existingViolation + "|");
+
+                if (existingViolation < 0) {
+                    existingViolation = 0;
+                }
+                gr.u_compliance_violations = existingViolation;
+                gr.update();
+            } else {
+                this.logger.error("NOT : " + manager);
+                gr = new GlideRecord(CIDMicroServiceComplainceConstants.SSCT_COMPLIANCE_USERS_TABLE);
+                gr.u_compliance_violations = violation;
+                gr.u_user_name = manager;
+                gr.u_manager_user_name = 'Others';
+                gr.insert();
+
+            }
+
+
+        } catch (e) {
+            this.logger.error("Final updateComplianceUsersViolation Exception :" + e + "|");
+        }
+
+
+    },
+	
+	populateComplianceUser: function(){
+		
+    
+    
+        var businessHead = CIDCommunicator.read("SURF_CHANNEL", { email: "mike.lents@servicenow.com" }, { tableName: "sys_user" }).output[0];
+        this.insertUser(businessHead);
+    
+        var businessHeadSysID = businessHead.sys_id.toString();
+
+        var businessHeadUserName = businessHead.user_name;
+    
+    
+        var response = CIDCommunicator.read("SURF_CHANNEL", { manager: businessHeadSysID }, { tableName: "sys_user" });
+    
+    
+        this.findReportees(response.output , businessHeadUserName);
+    
+    
+    },
+		findReportees: function(reportees, managerUserId){
+			for(var count=0;count<reportees.length;count++){
+          
+            this.insertUser(reportees[count],managerUserId);
+
+
+            var businessHeadSysID = reportees[count].sys_id.toString();
+				
+            var reporteeUserName = !gs.nil(reportees[count].user_name) ? reportees[count].user_name : "NOT_FOUND";
+            
+            var directs = CIDCommunicator.read("SURF_CHANNEL", { manager: businessHeadSysID }, { tableName: "sys_user" });
+
+               // var directs = CIDCommunicator.read("HI_CHANNEL", {}, hiQuery);
+                // gs.print("directs : " + JSON.stringify(directs));
+            
+                if (!gs.nil(directs) && directs.status == "Success" && (!gs.nil(directs.output) && directs.output.length > 0)) {
+            
+            
+                    // gs.print("directs : " + directs.output.length);
+                    this.findReportees(directs.output, reporteeUserName);
+                }
+        
+		}
+		},
+	
+	
+ insertUser:function (user,managerUserName) {
+        var gr = new GlideRecord("u_compliance_users");
+        
+        
+          
+           gr.u_first_name = user.first_name;   
+           gr.u_last_name = user.last_name;   
+           gr.u_email = user.email;
+           gr.u_email =  user.email;
+           gr.u_user_name = !gs.nil(user.user_name) ? user.user_name : "NOT_FOUND";
+           gr.u_account_status = user.u_account_status;
+           gr.u_manager_user_name = managerUserName;
+           gr.insert();    
+
+   },	
+	
+purgeComplianceUsers: function(){
+	 var gr = new GlideRecord("u_compliance_users");
+	gr.deleteMultiple();
+	
+},
+
+    type: 'SSRTDashboardHelper'
+};
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-28 03:51:29</sys_created_on>
+        <sys_id>8e36736a4fcd53000d6589dba310c70d</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>SSRTDashboardHelper</sys_name>
+        <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+        <sys_update_name>sys_script_include_8e36736a4fcd53000d6589dba310c70d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-04-02 05:24:46</sys_updated_on>
+    </sys_script_include>
+</record_update>

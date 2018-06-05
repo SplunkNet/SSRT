@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_ssrt.GenerateRecommendations</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>GenerateRecommendations</name>
+        <script><![CDATA[var GenerateRecommendations = Class.create();
+GenerateRecommendations.prototype = {
+	helper : new CIDMicroServiceComplainceHelper(),
+    initialize: function() {
+    },
+	/**TODO90210
+	
+	*/
+	run:function(){
+		var dashBoardHelper = new CIDMicroServiceComplianceDashoardHelper();
+			dashBoardHelper.complianceUsersReset();
+
+		var runByActionkey = new ScheduleOnce();
+runByActionkey.script = "(new CIDMicroServiceComplainceAPI()).populateComplainceReport()"; 
+runByActionkey.schedule();
+	},
+	
+	populateRecommendationReport:function(){
+		 try {
+			this.helper.clearHistory();
+			var handlersGR  = this.helper.getComponentHandlersGR();
+			var patternArray = this.helper.getPatterns();
+			var returnArray = [];
+			while(handlersGR.next()) {				
+				/* Handle emtpy conditions */ 
+				if (gs.nil(handlersGR.u_script))
+					 throw new Error(" Found invalid handler script : "+handlersGR.u_name.toString());						
+
+				/* Evaluate the handler script */
+				 GlideEvaluator.evaluateString(handlersGR.u_script.toString());
+
+				 /* Call the handler */
+				 returnArray = handleComponent(patternArray,returnArray);
+		     }
+			 var patternMap = this.helper.getMicroServicesByPattern();
+			 this.helper.populateTable(returnArray,patternMap);
+		} catch (e) {
+		    	throw e;
+		}
+	},
+
+    type: 'GenerateRecommendations'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-28 03:32:49</sys_created_on>
+        <sys_id>e181ff624f8953000d6589dba310c720</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>GenerateRecommendations</sys_name>
+        <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+        <sys_update_name>sys_script_include_e181ff624f8953000d6589dba310c720</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-28 03:37:42</sys_updated_on>
+    </sys_script_include>
+</record_update>

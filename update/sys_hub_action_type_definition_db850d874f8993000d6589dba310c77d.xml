@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_hub_action_type_definition">
+    <sys_hub_action_type_definition action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <annotation/>
+        <category display_value="Execute Script">a06549c74f8993000d6589dba310c775</category>
+        <description>This is a Action to execute a script</description>
+        <label_cache>[{"name":"{{action.ah_script}}","label":"action➛Script","type":"action","ref":""}]</label_cache>
+        <latest_snapshot/>
+        <name>Execute Report</name>
+        <outputs/>
+        <outputs/>
+        <state>draft</state>
+        <sys_class_name>sys_hub_action_type_definition</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-29 04:13:26</sys_created_on>
+        <sys_id>db850d874f8993000d6589dba310c77d</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Execute Report</sys_name>
+        <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+        <sys_update_name>sys_hub_action_type_definition_db850d874f8993000d6589dba310c77d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-29 04:21:48</sys_updated_on>
+        <system_level>false</system_level>
+    </sys_hub_action_type_definition>
+    <sys_translated_text action="delete_multiple" query="documentkey=db850d874f8993000d6589dba310c77d"/>
+    <sys_variable_value action="delete_multiple" query="document_key=db850d874f8993000d6589dba310c77d"/>
+    <sys_variable_value action="INSERT_OR_UPDATE">
+        <document>sys_hub_action_type_definition</document>
+        <document_key>db850d874f8993000d6589dba310c77d</document_key>
+        <order>0</order>
+        <sys_class_name>sys_variable_value</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-29 04:21:48</sys_created_on>
+        <sys_id>b577890b4f8993000d6589dba310c78a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-29 04:21:48</sys_updated_on>
+        <value/>
+        <variable display_value="">d067490b4f8993000d6589dba310c7af</variable>
+    </sys_variable_value>
+    <sys_element_mapping action="delete_multiple" query="id=db850d874f8993000d6589dba310c77d"/>
+    <sys_element_mapping action="INSERT_OR_UPDATE">
+        <field>parameter</field>
+        <id>db850d874f8993000d6589dba310c77d</id>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-03-29 04:21:48</sys_created_on>
+        <sys_id>bd77890b4f8993000d6589dba310c789</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-03-29 04:21:48</sys_updated_on>
+        <table>var__m_sys_hub_action_output_db850d874f8993000d6589dba310c77d</table>
+        <value>{{action.ah_script}}</value>
+    </sys_element_mapping>
+</record_update>

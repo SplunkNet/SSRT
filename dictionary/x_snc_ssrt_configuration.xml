@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Configuration" max_length="40" name="x_snc_ssrt_configuration" type="collection">
+        <element label="Active" max_length="32" name="active" type="boolean"/>
+        <element label="Group" max_length="32" name="group" reference="x_snc_ssrt_ssrt_group" type="reference"/>
+        <element display="true" label="Head" max_length="32" name="head" reference="sys_user" type="reference"/>
+        <index name="index">
+            <element name="head"/>
+        </index>
+        <index name="index2">
+            <element name="group"/>
+        </index>
+    </element>
+</database>

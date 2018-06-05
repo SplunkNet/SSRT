@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="user" label="User" language="en" table="x_snc_ssrt_run_reports">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>user</element>
+            <help/>
+            <hint/>
+            <label>User</label>
+            <language>en</language>
+            <name>x_snc_ssrt_run_reports</name>
+            <plural>Users</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-04-03 00:29:13</sys_created_on>
+            <sys_id>6722c26c4fd957000d6589dba310c753</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>User</sys_name>
+            <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+            <sys_update_name>sys_documentation_x_snc_ssrt_run_reports_user_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-04-03 00:29:13</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

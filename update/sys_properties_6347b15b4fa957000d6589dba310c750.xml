@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>These files are the core files of Recommended Services are require to use low level patterns hence it is excluded. </description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_snc_ssrt.ExcludeScripts</name>
+        <read_roles/>
+        <suffix>ExcludeScripts</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-04-23 23:02:50</sys_created_on>
+        <sys_id>6347b15b4fa957000d6589dba310c750</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_snc_ssrt.ExcludeScripts</sys_name>
+        <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+        <sys_update_name>sys_properties_6347b15b4fa957000d6589dba310c750</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-04-23 23:02:50</sys_updated_on>
+        <type>string</type>
+        <value>CIDMicroServiceComplainceHelper, CIDMicroServiceComplainceAPI, CIDCloneCommunicationUtil, CIDCommunicationHandlerFactory, CIDCommunicationHelper, CIDCommunicator, CidHiTicketDAO, CidHiTicketManager, CidLogger, CidAHAv180, CidHAMySqlValidator, CidAHAv170, CidCloneEmailAuditWorkflowV2, CidDbfPreflightChecksSi, CidAddNodeWorkflowLauncher, CidAHAv170_preflightChecks, ReprovisionBatch, CidConnectivityUtility, VMwareIPPoolManager, CidAddNodeWorkflow, WFActivityHandler, CidCloneEmailAuditWorkflow, EmailReprovisionCycle, WorkflowModelManager, CidConfigureInstanceWorkflow, JunkLogger, CidExecuteDbServerNodeRestart, CidAddF5PoolWorkflow, CidInstanceMoveHelpers, WorkflowCoordinator, CidDbFailoverWorkflowTest, CidStartNodeAsStandbyWorkflow, CidSkuManager, CidUpdateIPWhiteListWorkflow, CidGracefulNodeRestartWorkflow, WebServiceActivityHandler, CidInstanceProvisioningMultiNodeWorkflow, CidCmdbBatchAuditor, AdvancedScriptExecution, CidPrepareForSeedingWorkflow, SncAccountRequest, CidAddNodeWorkflowNoValidationLauncher, CidTriageNodeDataWorkflow, EmailProvisionWF, CidBaseMessageMgr, CidTestTungstenSeedingWorkflow, CidPatchSchemaMismatch, CidWebServiceActivityHandler, CidGen1CloneWorkflow,dccUtils, CIDMicroServiceComplainceHelper, CIDMicroServiceComplainceAPI, dccPrintScrubbed, CidLogger,CIDGenerateEmailTriageScripts , CidChangeRequestHelper,CidTungstenReplicatorWorkflow,CidInstanceMoveWorkflow,InstanceMoveScheduleUtil,InstanceMoveScheduleAutoRetry,InstanceMoveScheduler,InstanceMoveScheduleChangeRequest,InstanceMoveScheduleConverge,CidIMPreflight,InstanceMoveScheduleSyncCmdb,ReseedQueueCommon</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=6347b15b4fa957000d6589dba310c750"/>
+</record_update>

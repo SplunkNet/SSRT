@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Pattern Map" max_length="40" name="x_snc_ssrt_pattern_map" type="collection">
+        <element label="Active" max_length="32" name="active" type="boolean"/>
+        <element choice="1" label="Microservice" max_length="32" name="microservice" reference="x_snc_ssrt_service" type="reference">
+            <choice/>
+        </element>
+        <element choice="1" display="true" label="Pattern" max_length="32" name="pattern" reference="x_snc_ssrt_anti_pattern" type="reference">
+            <choice/>
+        </element>
+    </element>
+</database>

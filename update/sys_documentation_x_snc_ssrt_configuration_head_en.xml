@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="head" label="Head" language="en" table="x_snc_ssrt_configuration">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>head</element>
+            <help/>
+            <hint/>
+            <label>Head</label>
+            <language>en</language>
+            <name>x_snc_ssrt_configuration</name>
+            <plural>Heads</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-03-26 12:32:36</sys_created_on>
+            <sys_id>8e0b1b824fcd13000d6589dba310c7cf</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Head</sys_name>
+            <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+            <sys_update_name>sys_documentation_x_snc_ssrt_configuration_head_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-03-26 12:32:36</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

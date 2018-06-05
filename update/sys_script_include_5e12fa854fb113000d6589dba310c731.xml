@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_snc_ssrt.TestSSRT1</api_name>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>TestSSRT1</name>
+        <script><![CDATA[
+function test(){
+	
+	
+	var pattern1 = "catch";
+}]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2018-04-29 13:53:43</sys_created_on>
+        <sys_id>5e12fa854fb113000d6589dba310c731</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>TestSSRT1</sys_name>
+        <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+        <sys_update_name>sys_script_include_5e12fa854fb113000d6589dba310c731</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2018-04-29 13:53:43</sys_updated_on>
+    </sys_script_include>
+</record_update>

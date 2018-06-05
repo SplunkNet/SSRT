@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Report" max_length="40" name="x_snc_ssrt_run_reports" type="collection">
+        <element label="Anti Pattern" max_length="32" name="anti_pattern" reference="x_snc_ssrt_anti_pattern" type="reference"/>
+        <element label="Code Reference" max_length="64" name="code_reference" type="string"/>
+        <element label="File Type" max_length="64" name="file_type" type="string"/>
+        <element display="true" label="Last Updated By" max_length="32" name="last_updated_by" reference="sys_user" type="reference"/>
+        <element label="Occurence" max_length="32" name="occurence" type="string"/>
+        <element default="64" label="Owner" max_length="40" name="owner" type="string"/>
+        <element label="Recommended Service" max_length="32" name="recommended_service" reference="x_snc_ssrt_service" type="reference"/>
+        <element label="Report Configuration" max_length="32" name="report_configuration" reference="x_snc_ssrt_reports" type="reference"/>
+        <element label="User" max_length="64" name="user" type="string"/>
+        <element label="User Group" max_length="32" name="user_group" reference="x_snc_ssrt_ssrt_group" type="reference"/>
+        <index name="index">
+            <element name="last_updated_by"/>
+        </index>
+        <index name="index2">
+            <element name="user_group"/>
+        </index>
+        <index name="index3">
+            <element name="anti_pattern"/>
+        </index>
+        <index name="index4">
+            <element name="recommended_service"/>
+        </index>
+        <index name="index5">
+            <element name="report_configuration"/>
+        </index>
+    </element>
+</database>

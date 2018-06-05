@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update>
+    <sys_documentation element="pattern" label="Pattern" language="en" table="x_snc_ssrt_pattern_map">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>pattern</element>
+            <help/>
+            <hint/>
+            <label>Pattern</label>
+            <language>en</language>
+            <name>x_snc_ssrt_pattern_map</name>
+            <plural>Patterns</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>admin</sys_created_by>
+            <sys_created_on>2018-03-26 04:14:26</sys_created_on>
+            <sys_id>a009e14a4fc913000d6589dba310c7fa</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Pattern</sys_name>
+            <sys_package display_value="Shared Service Recommendation Tool" source="x_snc_ssrt">b8df38884f7c53400d6589dba310c754</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Shared Service Recommendation Tool">b8df38884f7c53400d6589dba310c754</sys_scope>
+            <sys_update_name>sys_documentation_x_snc_ssrt_pattern_map_pattern_en</sys_update_name>
+            <sys_updated_by>admin</sys_updated_by>
+            <sys_updated_on>2018-03-26 04:14:26</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

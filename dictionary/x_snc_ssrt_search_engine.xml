@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Search Engine" max_length="40" name="x_snc_ssrt_search_engine" type="collection">
+        <element label="Active" max_length="40" name="active" type="boolean"/>
+        <element label="Description" max_length="200" name="description" type="string"/>
+        <element display="true" label="Name" max_length="40" name="name" type="string"/>
+        <element label="Script" max_length="8000" name="script" type="script"/>
+    </element>
+</database>

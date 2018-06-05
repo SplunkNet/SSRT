@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <element label="Configure Reports" max_length="40" name="x_snc_ssrt_reports" type="collection">
+        <element choice="1" label="Group" max_length="40" name="group" reference="x_snc_ssrt_ssrt_group" type="reference">
+            <choice/>
+        </element>
+        <element display="true" label="Name" max_length="64" name="name" type="string"/>
+        <element choice="1" label="Pattern Maps" mandatory="true" max_length="40" name="patterns" reference="x_snc_ssrt_pattern_map" type="glide_list">
+            <choice/>
+        </element>
+    </element>
+</database>
